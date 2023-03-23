@@ -76,6 +76,55 @@ print(ia(board, signe))
 
 
 
+
+
+
+essais 
+bestScore = -800
+            bestMove = 0
+            for i in board.keys():
+                if board[i] == "v":
+                    board[i] = "o"
+                    score = minimax(board,False)
+                    board[i] = "v"
+                if score > bestScore:
+                    bestScore = score
+                    bestMove = i
+            button = buttons[best_move]
+            button["text"] = "O"
+            if win(turn) :
+                winLabel = Label(frame1 , text="L'IA a gagné la partie",font=("Arial",25), bg="gray",width=18)
+                winLabel.grid(row= 0 , column= 0 , columnspan= 3)
+                fin_jeu = True
+            elif checkgamenulle():
+                nulleLabel = Label(frame1 , text= "Partie nulle" ,font=("Arial",25), bg="gray",width=18)
+                nulleLabel.grid(row= 0 , column= 0 , columnspan= 3)
+                fin_jeu = True
+            return
+
+
+
+ score = {}
+            for i in board.keys():
+                if board[i] == "v":
+                    board[i] = "o"
+                    score = minimax(board,100, False)
+                    board[i] = "v"
+                    if score > bestScore:
+                        bestScore = score
+                        bestMove = i
+            best_move = max(score, key=score.get)
+            button = buttons[best_move-1]
+            button["text"] = "O"
+            board[best_move] = "o"
+            if win(turn) :
+                winLabel = Label(frame1 , text="L'IA a gagné la partie",font=("Arial",25), bg="gray",width=18)
+                winLabel.grid(row= 0 , column= 0 , columnspan= 3)
+                fin_jeu = True
+            elif checkgamenulle():
+                nulleLabel = Label(frame1 , text= "Partie nulle" ,font=("Arial",25), bg="gray",width=18)
+                nulleLabel.grid(row= 0 , column= 0 , columnspan= 3)
+                fin_jeu = True
 def minimax(board, depth, isMaximizing):
     if win("o"):
         return 1
@@ -85,21 +134,23 @@ def minimax(board, depth, isMaximizing):
         return 0
     
     if isMaximizing:
-        bestScore = -10
+        bestScore = -800
         for i in board.keys():
             if board[i] == "v":
                 board[i] = "o"
-                score = minimax(board, depth+1, False)
+                score = minimax(board , depth+1 , False)
                 board[i] = "v"
-                bestScore = max(score, bestScore)
+                if score > bestScore:
+                    bestScore = score
         return bestScore
     
     else:
-        bestScore = 10
+        bestScore = 800
         for i in board.keys():
             if board[i] == "v":
                 board[i] = "x"
-                score = minimax(board, depth+1, True)
-                board[i] = "v"
-                bestScore = min(score, bestScore)
+                score = minimax(board, depth+1 , True)
+                board[i] = "x"
+                if score < bestScore:
+                    bestScore = score
         return bestScore
