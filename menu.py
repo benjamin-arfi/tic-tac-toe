@@ -3,6 +3,7 @@ root = Tk()
 root.geometry("400x550")
 root.title("Tic Tac Toe")
 
+    
 frame1 = Frame(root)
 frame1.pack()
 titleLabel = Label(frame1,text="Menu",font=("Arial",25),bg="green",width=18)
@@ -10,6 +11,8 @@ titleLabel.grid(row=0, column=0, columnspan=3)
 
 frame2 = Frame(root)
 frame2.pack()
+
+
 
 def jeuia():
     import ia

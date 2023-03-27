@@ -1,7 +1,7 @@
 
 from tkinter import *
 import random
-
+random.seed()
 
 root = Tk()
 
@@ -45,10 +45,12 @@ def win(player):
     return False
 
 def checkgamenulle():
-    for i in board.keys():
-        if board [i] == "v":
-            return False
-    return True
+    global win
+    if not win(turn):
+        for i in board.keys():
+            if board [i] == "v":
+                return False
+        return True
 
 def restartgame():
     global winLabel
@@ -56,8 +58,9 @@ def restartgame():
     fin_jeu = False
     for button in buttons:
         button["text"] = ""
-    for i in board.keys():
-        board[i] = "v"
+    for key in board.keys():
+        board[key] = "v"
+        
     titleLabel = Label(frame1,text="Tic Tac Toe",font=("Arial",25),bg="green",width=18)
     titleLabel.grid(row=0, column=0,columnspan=3)
 
@@ -87,7 +90,7 @@ def jouer_ia(event):
                     winLabel = Label(frame1 , text=f"{turn} a gagne la partie",font=("Arial",25),bg="gray",width=18)
                     winLabel.grid(row= 0 , column= 0 , columnspan= 3)
                     fin_jeu = True
-            elif checkgamenulle():
+            if checkgamenulle():
                 nulleLabel = Label(frame1 , text= "Partie nulle" ,font=("Arial",25), bg="gray",width=18)
                 nulleLabel.grid(row= 0 , column= 0 , columnspan= 3)
                 fin_jeu = True
@@ -95,9 +98,11 @@ def jouer_ia(event):
             for i in board.keys():
                 if board[i] == "v":
                     case.append(i)
-            choisi = random.choice(case)
-            board[choisi] = "o"
-            buttons[choisi-1]["text"]="O"
+            if board[i] == "v":
+                    choisi = random.choice(case)
+                    board[choisi] = "o"
+                    buttons[choisi-1]["text"]="O"
+                    print(choisi)
             if win(turn) :
                 winLabel = Label(frame1 , text="L'IA a gagné la partie",font=("Arial",25), bg="gray",width=18)
                 winLabel.grid(row= 0 , column= 0 , columnspan= 3)
@@ -107,7 +112,6 @@ def jouer_ia(event):
                 nulleLabel.grid(row= 0 , column= 0 , columnspan= 3)
                 fin_jeu = True
             turn = "x"
-
 #premiere range
 
 button1 = Button(frame2,text= "", width = 4 ,height = 2 , font=("Arial", 35), relief= RAISED )

@@ -55,6 +55,7 @@ def restartgame():
         button["text"] = ""
     for i in board.keys():
         board[i] = "v"
+    
     titleLabel = Label(frame1,text="Tic Tac Toe",font=("Arial",25),bg="green",width=18)
     titleLabel.grid(row=0, column=0,columnspan=3)
 
@@ -65,18 +66,17 @@ fin_jeu = False
 def jouer_iadur(event):
     global turn 
     global fin_jeu
-    case = []
     if fin_jeu:
         return
     if turn ==  "x":
         button = event.widget
         buttontext = str(button)
         clicked = buttontext[-1]
-        print(clicked)
         if clicked == "n":
             clicked = 1
         else:
             clicked = int(clicked)
+        print(clicked)
         if button["text"]== "":
             button["text"]= "X"
             board[clicked] = turn
@@ -93,12 +93,14 @@ def jouer_iadur(event):
             for i in board.keys():
                 if board[i] == "v":
                     board[i] = "o"
-                    scores[i] = minimax(board, 100 , False)
+                    scores[i] = minimax(board , False)
                     board[i] = "v"
-            best_move = max(scores, key=scores.get)
-            button = buttons[best_move-1]
-            button["text"] = "O"
-            board[best_move] = "o"
+            if board[i] == "v":
+                best_move = max(scores, key=scores.get)
+                button = buttons[best_move-1]
+                button["text"] = "O"
+                board[best_move] = "o"
+                print(i)
             if win(turn) :
                 winLabel = Label(frame1 , text="L'IA a gagné la partie",font=("Arial",25), bg="gray",width=18)
                 winLabel.grid(row= 0 , column= 0 , columnspan= 3)
@@ -108,7 +110,7 @@ def jouer_iadur(event):
                 nulleLabel.grid(row= 0 , column= 0 , columnspan= 3)
                 fin_jeu = True
             turn = "x"
-def minimax(board, depth, isMaximizing):
+def minimax(board, isMaximizing):
     if win("o"):
         return 1
     elif win("x"):
@@ -121,7 +123,7 @@ def minimax(board, depth, isMaximizing):
         for i in board.keys():
             if board[i] == "v":
                 board[i] = "o"
-                score = minimax(board, depth+1, False)
+                score = minimax(board, False)
                 board[i] = "v"
                 bestScore = max(score, bestScore)
         return bestScore
@@ -131,7 +133,7 @@ def minimax(board, depth, isMaximizing):
         for i in board.keys():
             if board[i] == "v":
                 board[i] = "x"
-                score = minimax(board, depth+1, True)
+                score = minimax(board, True)
                 board[i] = "v"
                 bestScore = min(score, bestScore)
         return bestScore

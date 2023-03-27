@@ -1,6 +1,5 @@
 from tkinter import *
-import random
-random.seed()
+
 
 root = Tk()
 root.geometry("400x550")
@@ -44,7 +43,7 @@ def win(player):
 
 def checkgamenulle():
     for i in board.keys():
-        if board [i] == "v":
+        if board [i] == "v" and not win(turn):
             return False
     return True
 
@@ -60,7 +59,7 @@ def restartgame():
     titleLabel.grid(row=0, column=0,columnspan=3)
     
 
-turn = "x"
+turn = "o"
 fin_jeu = False
 
 
